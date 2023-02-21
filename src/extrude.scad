@@ -11,14 +11,14 @@ module vase() {
 vase();
 */
 
-/* Example: Pillar
+/* Example: Pillar *
 module pillar() {
-    functional_extrude(height=300,steps=8,f_skew=[function(zn) 200*(zn*zn-zn), 0], f_scale=function (zn) 1+sin(zn*320)*0.3, f_twist=function (zn) zn*90) scale([0.5,1]) circle(r=50);
+    functional_extrude(height=300,steps=19,f_skew=[function(zn) 200*(zn*zn-zn), 0], f_scale=function (zn) 1+sin(zn*320)*0.3, f_twist=function (zn) zn*90) scale([0.5,1]) circle(r=50);
 }
 pillar();
 */
 
-/* Example: Pillar
+/* Example: Pillar *
 module katana() {
     poly = [[0,2],[1,1],[0.5,-1.5],[-0.5,-1.5],[-1,1]];
     functional_extrude(height=200,f_skew=[0, function(z) 20*(z*z-z)]) polygon(poly);
@@ -37,12 +37,13 @@ katana();
  *  f_scale:    Size scales along with Z axis.
  *  f_twist:    Twist in Z direction along with Z axis.
  */
-module functional_extrude(height, zn=0, steps=100, f_skew=[f_constant(0),f_constant(0)], f_scale=f_constant(1), f_twist=f_constant(0)) {
+module functional_extrude(height, step=0, steps=100, f_skew=[f_constant(0),f_constant(0)], f_scale=f_constant(1), f_twist=f_constant(0)) {
     if (is_num(f_skew.x)) {
-        functional_extrude(height=height, zn=zn, steps=steps, f_skew=[f_constant(f_skew.x),f_skew.y],f_scale=f_scale, f_twist=f_twist) children();
+        functional_extrude(height=height, step=step, steps=steps, f_skew=[f_constant(f_skew.x),f_skew.y],f_scale=f_scale, f_twist=f_twist) children();
     } else if (is_num(f_skew.y)) {
-        functional_extrude(height=height, zn=zn, steps=steps, f_skew=[f_skew.x,f_constant(f_skew.y)],f_scale=f_scale, f_twist=f_twist) children();
-    } else if ((zn+1/steps) <= 1) {
+        functional_extrude(height=height, step=step, steps=steps, f_skew=[f_skew.x,f_constant(f_skew.y)],f_scale=f_scale, f_twist=f_twist) children();
+    } else if (step<steps) {
+        zn = step/(steps);
         union() {
             dx = (f_skew.x(zn+1/steps)-f_skew.x(zn));
             dy = (f_skew.y(zn+1/steps)-f_skew.y(zn));
@@ -60,7 +61,7 @@ module functional_extrude(height, zn=0, steps=100, f_skew=[f_constant(0),f_const
                         scale([f_scale(zn),f_scale(zn),1])
                             rotate([0,0,f_twist(zn)])
                                 children(0);
-            functional_extrude(height=height, zn=zn+1/steps, steps=steps, f_skew=f_skew, f_scale=f_scale, f_twist=f_twist) children(0);
+            functional_extrude(height=height, step=step+1, steps=steps, f_skew=f_skew, f_scale=f_scale, f_twist=f_twist) children(0);
         }
     }
 }
