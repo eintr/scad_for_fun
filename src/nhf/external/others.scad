@@ -54,3 +54,13 @@ module motor_300($fn=18) {
     translate([0,0,-1]) cylinder(d=6.1,h=1);
     translate([0,0,12.5]) cylinder(d=6.5,h=0.8);
 }
+
+module nhf_external_filament_roll_1kg() {
+    $fn=180;
+    color("gray", alpha=0.5) {
+        difference() {
+            cylinder(d=200,h=60);
+            translate([0,0,-1]) cylinder(d=60,h=110);
+        }
+    }
+}

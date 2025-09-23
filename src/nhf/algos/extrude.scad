@@ -4,7 +4,7 @@ module vase() {
     A = 100;
     fxy = function (r,theta) [r*(1+0.3*sin(theta*80))*sin(theta), r*(1+0.3*sin(theta*80))*cos(theta) ];
     difference() {
-        functional_extrude(height=300,f_scale=function (z) 1+sin(z*320)*0.3, f_twist=function (z) z*35) polygon([for (theta=[0:0.5:359]) fxy(A, theta)]);
+        nhf_algo_functional_extrude(height=300,f_scale=function (z) 1+sin(z*320)*0.3, f_twist=function (z) z*35) polygon([for (theta=[0:0.5:359]) fxy(A, theta)]);
         translate([0,0,15]) cylinder(h=HEIGHT*2,d=A*.6+30);
     }
 }
@@ -13,7 +13,7 @@ vase();
 
 /* Example: Pillar *
 module pillar() {
-    functional_extrude(height=300,steps=19,f_skew=[function(zn) 200*(zn*zn-zn), 0], f_scale=function (zn) 1+sin(zn*320)*0.3, f_twist=function (zn) zn*90) scale([0.5,1]) circle(r=50);
+    nhf_algo_functional_extrude(height=300,steps=19,f_skew=[function(zn) 200*(zn*zn-zn), 0], f_scale=function (zn) 1+sin(zn*320)*0.3, f_twist=function (zn) zn*90) scale([0.5,1]) circle(r=50);
 }
 pillar();
 */
@@ -21,7 +21,7 @@ pillar();
 /* Example: Pillar *
 module katana() {
     poly = [[0,2],[1,1],[0.5,-1.5],[-0.5,-1.5],[-1,1]];
-    functional_extrude(height=200,f_skew=[0, function(z) 20*(z*z-z)]) polygon(poly);
+    nhf_algo_functional_extrude(height=200,f_skew=[0, function(z) 20*(z*z-z)]) polygon(poly);
 }
 
 katana();
@@ -37,6 +37,12 @@ katana();
  *  f_scale:    Size scales along with Z axis.
  *  f_twist:    Twist in Z direction along with Z axis.
  */
+module nhf_algo_functional_extrude(height, step=0, steps=100, f_skew=[f_constant(0),f_constant(0)], f_scale=f_constant(1), f_twist=f_constant(0)) {
+	functional_extrude(height, step=step, steps=steps, f_skew=f_skew, f_scale=f_scale, f_twist=f_twist);
+}
+
+/****************************************************************************************/
+
 module functional_extrude(height, step=0, steps=100, f_skew=[f_constant(0),f_constant(0)], f_scale=f_constant(1), f_twist=f_constant(0)) {
     if (is_num(f_skew.x)) {
         functional_extrude(height=height, step=step, steps=steps, f_skew=[f_constant(f_skew.x),f_skew.y],f_scale=f_scale, f_twist=f_twist) children();

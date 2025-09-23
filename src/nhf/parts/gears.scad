@@ -1,5 +1,5 @@
-use <nhf/list.scad>
-use <nhf/math.scad>
+use <nhf/algos/list.scad>
+use <nhf/algos/math.scad>
 
 // Example:
 //gear(z=28,m=1,b=10);
