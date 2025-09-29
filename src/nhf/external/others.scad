@@ -1,3 +1,5 @@
+use <nhf/algos/list.scad>
+
 //motor_2032();
 module motor_2032() {
     difference() {
@@ -64,3 +66,36 @@ module nhf_external_filament_roll_1kg() {
         }
     }
 }
+
+// 2.5 inch harddrive
+module nhf_external_sataHD_25inch(a1=7) {
+	valid_a1 = [19.05,17,15,12.7,10.5,9.5,8.47,7,5];
+	assert(search(a1,valid_a1)!=[],"a1 is not valid");
+	dim=[69.85,100.45,a1];
+	color("gray") {
+		difference() {
+			cube(dim);
+			translate([(dim.x-60)/2,-0.01,-0.01]) cube([60,4.8,5]);
+			for (y=[14,14+75.4],x=[0-0.01,dim.x-6.5+0.01])
+				translate([x,y,3])
+					rotate([0,90,0])
+						cylinder(d=2.5,h=6.6,$fn=18);
+			for (y=[14,14+75.4],x=[4.07,4.07+61.72])
+				translate([x,y,-0.01])
+					cylinder(d=2.5,h=6.5,$fn=18);
+
+		}
+		translate([13,0,2]) cube([33,5,1]);
+		if ($preview) {
+			for (y=[14,14+75.4],x=[0,70-6.5+0.01])
+					translate([x,y,3])
+						rotate([0,90,0])
+							cylinder(d=0.1,h=20,$fn=3,center=true);
+			for (y=[14,14+75.4],x=[4.07,4.07+61.72])
+					translate([x,y,0])
+						cylinder(d=0.1,h=20,$fn=3,center=true);
+		}
+	}
+}
+
+nhf_external_sataHD_25inch(a1=9.5);
