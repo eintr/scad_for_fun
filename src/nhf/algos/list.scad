@@ -7,6 +7,9 @@ function tail(L) = len(L)>1?[for (i=[1:len(L)-1]) L[i] ]:[];
 function car(L) = head(L);
 function cdr(L) = tail(L);
 
+function contains(list, target) = 
+    search([target], list) != [];
+
 function revert(L,result=[]) = (L==[])?result:concat(revert(cdr(L)),[car(L)]);
 
 //echo(logo_translate([["f",10],["l",20],["f",40],["r",5],["f",33]]));
