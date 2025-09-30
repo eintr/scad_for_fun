@@ -1,23 +1,61 @@
 use <nhf/algos/math.scad>
 use <nhf/algos/list.scad>
 
-module nhf_shape_neg(type="louver", dim=[100,100,4], arg=undef) {
+/*
+ * Negtive plate
+ *  nhf_shape_neg_plate(type, dim, arg)
+ *      dim: [X,Y,Z]
+ *      type:
+ *          "louver": louvered grille
+ *              arg[0]: grille size
+ *              arg[1]: gap size
+ *          "hive": hive shaped grille
+ *              arg[0]: hole diameter
+ *              arg[1]: grille width
+ */
+module nhf_shape_neg_plate(type="louver", dim=[100,100,4], arg=undef) {
 	if (type=="louver") {
 		param_blade = arg==undef?2:arg[0];
 		param_spacing = arg==undef?1.5:arg[1];
 		nhf_neg_louver(dim=dim,blade=param_blade,spacing=param_spacing);
-	} else if (type==hive) {
+	} else if (type=="hive") {
 		param_hole_d = arg==undef?35:arg[0];
 		param_hole_gap = arg==undef?3:arg[1];
 		neg_hive(dim=dim, hole_d=param_hole_d, th=param_hole_gap);
 	}
 }
 
-difference() {
-    translate([-5,-5,1]) cube([120,110,5]);
-    nhf_shape_neg(dim=[110,100,10]);
+/*
+ * Negtive plate
+ *  nhf_shape_neg_plate(type, dim, arg)
+ *      dim: [X,Y,Z]
+ *      type:
+ *          "louver": louvered grille
+ *              arg[0]: grille size
+ *              arg[1]: gap size
+ *          "hive": hive shaped grille
+ *              arg[0]: hole diameter
+ *              arg[1]: grille width
+ */
+module nhf_shape_neg_shaft(type="D",d=10,h=20, center=false, arg=undef) {
+    if (type=="D") {
+        nhf_neg_DShaft(d=d,h=h,D=(arg==undef?2:arg[0]),H=(arg==undef?h:arg[1]),center=center);
+    } else {
+        assert(true, "Unknown type");
+    }
 }
+
+nhf_shape_neg_plate(dim=[110,100,10],arg=[1,5]);
 /************************************************************************/
+
+module nhf_neg_DShaft(d=10,D=2,h=20,H=20,center=false) {
+    assert(D<=d,"D is too great");
+    assert(H<=h,"H is too great");
+    difference() {
+        cylinder(d=d,h=h,center=center);
+        translate([d/2-D+(center==true?d/2:0),center==true?0:-d/2,h-H]) cube([d,d,h+1],center=center);
+    }
+}
 
 module nhf_neg_saving(dim=[110,100,10],th=3,O=[0,0,0]) {
     assert(dim.x>th*2,"th is too big");
