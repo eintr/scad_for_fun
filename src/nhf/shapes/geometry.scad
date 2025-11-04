@@ -1,5 +1,6 @@
+include <nhf/algos/transform.scad>
 
-nhf_shape_geometry_icosahedron();
+//nhf_shape_geometry_icosahedron();
 
 // 正二十面体 (Icosahedron) 示例 —— OpenSCAD
 // edge: 边长
@@ -50,3 +51,10 @@ module nhf_shape_geometry_icosahedron(edge=20) {
     );
 }
 
+module nhf_shape_arrow(p0, p1, d=1) {
+    translate(p0)
+        nhf_rotate_toward(p1-p0) {
+            cylinder(d=d, h=norm(p1-p0)-d*2);
+            translate([0,0,norm(p1-p0)-d*2]) cylinder(d1=d*2, d2=0, h=d*2);
+        }
+}
