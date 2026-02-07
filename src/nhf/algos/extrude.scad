@@ -38,7 +38,7 @@ katana();
  *  f_twist:    Twist in Z direction along with Z axis.
  */
 module nhf_algo_functional_extrude(height, step=0, steps=100, f_skew=[f_constant(0),f_constant(0)], f_scale=f_constant(1), f_twist=f_constant(0)) {
-	functional_extrude(height, step=step, steps=steps, f_skew=f_skew, f_scale=f_scale, f_twist=f_twist);
+	functional_extrude(height, step=step, steps=steps, f_skew=f_skew, f_scale=f_scale, f_twist=f_twist) children();
 }
 
 /****************************************************************************************/

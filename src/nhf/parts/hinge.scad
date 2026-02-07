@@ -1,8 +1,91 @@
+/*
+ * Join 2 parts together with a hinge.
+ *      type:
+ *          "simple":
+ *      child[0]: located at [1,1,0]
+ *      child[1]: located at [-1,1,0]
+ */
+module nhf_part_hinged_join(type="simple",d=8,l=16,gap=0.4) {
+        nhf_hinge_simple(d=d,l=l,gap=gap);
+        difference() {
+            children(0);
+            nhf_hinge_simple(part="neg_center",d=d,l=l,gap=gap);
+        }
+        difference() {
+            children(1);
+            nhf_hinge_simple(part="neg_side",d=d,l=l,gap=gap);
+        }
+}
 
-module nhf_tool_hinge(type="filament1.75", neg=false, part="down", args=[]) {
+// Example
+nhf_part_hinged_join() {
+    translate([-10-0.1,0,-10]) cube([10,5,20]);
+    translate([0.1,0,-10]) cube([10,5,20]);
 }
 
 /****************************************************************/
+
+module nhf_hinge_simple(part="main", d=5, l=10, gap=0.4)
+{
+    if (part=="main") {
+        rotate([0,0,180]) {
+            // center
+            rotate([0,0,-90])
+                union() {
+                    cylinder(d=d-gap,h=l/3,center=true,$fs=d/100);
+                    translate([0,0,l/3/2]) sphere(d=d-gap,$fs=d/100);
+                    translate([0,0,-l/3/2]) sphere(d=d-gap,$fs=d/100);
+                    hull() {
+                        translate([0,d,0])
+                            cube([0.01,0.1,l/3-gap],center=true);
+                        cylinder(d=d-gap,h=l/3-gap,center=true,$fs=d/100);
+                    }
+                }
+            // side
+            rotate([0,0,90])
+                union() {
+                    translate([0,0,-l/3/2])
+                        difference() {
+                            hull() {
+                                translate([0,0,-l/3/2]) cylinder(d=d,h=l/3,center=true,$fs=d/100);
+                                translate([0,d,-l/3+gap]) cube([0.01,0.01,l/3-gap]);
+                            }
+                            sphere(d=d,$fs=d/100);
+                        }
+                    translate([0,0,l/3/2])
+                        difference() {
+                            hull() {
+                                translate([0,0,l/3/2]) cylinder(d=d,h=l/3,center=true,$fs=d/100);
+                                translate([0,d,0]) cube([0.01,0.01,l/3-gap]);
+                            }
+                            sphere(d=d,$fs=d/100);
+                        }
+                }
+        }
+    } else if (part=="neg_center") {
+        cylinder(d=d+gap,h=l+gap,center=true,$fs=d/100);
+        rotate([0,0,90])
+            hull() {
+                translate([0,0,l/3]) cylinder(d=d,h=l/3+gap,center=true,$fs=d/100);
+                translate([0,d,l/3/2-gap/2]) cube([0.01,0.01,l/3+gap]);
+            }
+        rotate([0,0,90])
+            hull() {
+                translate([0,0,-l/3]) cylinder(d=d,h=l/3+gap,center=true,$fs=d/100);
+                translate([0,d,-l/2-gap/2]) cube([0.01,0.01,l/3+gap]);
+            }
+    } else if (part=="neg_side") {
+        cylinder(d=d,h=l,center=true,$fs=d/100);
+        rotate([0,0,-90])
+            hull() {
+                translate([0,d,0])
+                    cube([0.01,gap*2,l/3],center=true);
+                cylinder(d=d,h=l/3,center=true,$fs=d/100);
+            }
+        } else {
+        assert(false);
+    }
+}
 
 module nhf_hinge(neg=false, part="down", axis="filament1.75", args=[], d=8,h=20) {
     if (neg) {

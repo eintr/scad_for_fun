@@ -47,7 +47,8 @@ module nhf_shape_geometry_icosahedron(edge=20) {
     // 主函数：绘制 polyhedron
     polyhedron(
         points = [ for (v = verts_unit) [ v[0]*scale_factor, v[1]*scale_factor, v[2]*scale_factor ] ],
-        faces  = faces
+        faces  = faces,
+        convexity = 4
     );
 }
 
@@ -55,6 +56,6 @@ module nhf_shape_arrow(p0, p1, d=1) {
     translate(p0)
         nhf_rotate_toward(p1-p0) {
             cylinder(d=d, h=norm(p1-p0)-d*2);
-            translate([0,0,norm(p1-p0)-d*2]) cylinder(d1=d*2, d2=0, h=d*2);
+            translate([0,0,norm(p1-p0)-d*2]) cylinder(d1=d*3, d2=0, h=d*2);
         }
 }

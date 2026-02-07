@@ -21,10 +21,10 @@ function bezier_2D(points) = [
 	]
 ];
 
-function bezier_3D(points) = [
-	for (i = [0:1:$fn-1]) [
-		bezier4(points, 0, i, $fn),
-		bezier4(points, 1, i, $fn),
-		bezier4(points, 2, i, $fn)
+function bezier_3D(points,segments) = [
+	for (i = [0:1:segments-1]) [
+		bezier4(points, 0, i, segments),
+		bezier4(points, 1, i, segments),
+		bezier4(points, 2, i, segments)
 	]
 ];
