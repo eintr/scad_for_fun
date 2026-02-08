@@ -6,4 +6,4 @@ function nhf_curve_involute(theta0=0, r0=10, r1=40)  = [
 	]
 ];
 
-echo (nhf_curve_involute());
+echo (nhf_curve_involute($fn=30));

@@ -47,4 +47,3 @@ module nhf_part_pegaboard(dim=[100,70,2], boardtype="round_hole",board_thick=2, 
 		assert(false, "ERROR: Unknown boardtype given");
 	}
 }
-

@@ -41,6 +41,8 @@ module nhf_algo_functional_extrude(height, step=0, steps=100, f_skew=[f_constant
 	functional_extrude(height, step=step, steps=steps, f_skew=f_skew, f_scale=f_scale, f_twist=f_twist) children();
 }
 
+function f_constant(c=1) = function (x) c;
+
 /****************************************************************************************/
 
 module functional_extrude(height, step=0, steps=100, f_skew=[f_constant(0),f_constant(0)], f_scale=f_constant(1), f_twist=f_constant(0)) {
@@ -71,4 +73,3 @@ module functional_extrude(height, step=0, steps=100, f_skew=[f_constant(0),f_con
         }
     }
 }
-function f_constant(c=1) = function (x) c;
