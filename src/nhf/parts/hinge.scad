@@ -82,7 +82,7 @@ module nhf_hinge_simple(part="main", d=5, l=10, gap=0.4)
                     cube([0.01,gap*2,l/3],center=true);
                 cylinder(d=d,h=l/3,center=true,$fs=d/100);
             }
-        } else {
+    } else {
         assert(false);
     }
 }
