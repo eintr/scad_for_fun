@@ -1,3 +1,4 @@
+include <nhf/const.scad>
 include <nhf/convenient.scad>
 include <nhf/algos.scad>
 include <nhf/curves.scad>
